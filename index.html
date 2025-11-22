@@ -6,7 +6,6 @@
     <title>CHORD SLAYER | TACTICAL OPS</title>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Teko:wght@300;600&display=swap" rel="stylesheet">
     <style>
-        /* ... existing styles ... */
         :root {
             --holo-cyan: #00f0ff;
             --holo-blue: #00a8ff;
@@ -241,7 +240,7 @@
         #screen-chords .tactical-panel, #screen-about .tactical-panel, #screen-tuner .tactical-panel, #screen-scales .tactical-panel, #screen-metronome .tactical-panel, #screen-radar .tactical-panel {
             border-color: var(--amber-glow); width: 900px; display: flex; gap: 40px;
         }
-        #screen-about .tactical-panel, #screen-more .tactical-panel, #screen-strum-search .tactical-panel { flex-direction: column; gap: 20px; }
+        #screen-about .tactical-panel, #screen-more .tactical-panel { flex-direction: column; gap: 20px; }
         
         /* Color Swaps */
         #screen-chords .panel-accent, #screen-about .panel-accent, #screen-more .panel-accent { border-color: var(--amber-glow); }
@@ -309,57 +308,19 @@
         .tap-btn { width: 100%; padding: 20px; background: rgba(255, 0, 85, 0.1); border: 2px solid var(--pink-flux); color: var(--pink-flux); font-weight: bold; font-size: 1.2rem; cursor: pointer; margin-top: 20px; transition: 0.1s; }
         .tap-btn:active { background: var(--pink-flux); color: white; transform: scale(0.98); }
 
-        /* --- RADAR UI (Interactive) --- */
-        .radar-container {
-            position: relative; width: 300px; height: 300px; margin: 20px auto;
-            /* border: 1px dashed #333; border-radius: 50%; */
-        }
-        
-        /* The Interactive Ring (SVG based would be better, but using divs for simplicity) */
-        .radar-segment {
-            position: absolute; top: 50%; left: 50%;
-            width: 20px; height: 140px; /* Radius approx */
-            transform-origin: bottom center;
-            /* background: red; */
-            display: flex; flex-direction: column; align-items: center;
-            justify-content: flex-start;
-            cursor: pointer;
-            transition: 0.2s;
-            color: #555;
-            font-weight: bold;
-        }
-        .radar-segment:hover { color: var(--purple-nebula); text-shadow: 0 0 10px var(--purple-nebula); transform: translate(-50%, -100%) scale(1.1); }
-        .radar-segment.active { color: white; text-shadow: 0 0 20px white; }
-        
-        /* Inner scan line */
-        .radar-scan-line {
-            position: absolute; top: 0; left: 50%; width: 50%; height: 2px;
-            background: var(--purple-nebula); transform-origin: left;
-            box-shadow: 0 0 10px var(--purple-nebula);
-            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Elastic snap */
-            z-index: 0;
-        }
-        
-        .radar-center {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            text-align: center; z-index: 10;
-            background: var(--hud-bg); border-radius: 50%; width: 100px; height: 100px;
-            display:flex; flex-direction:column; justify-content:center; align-items:center;
-            border: 2px solid var(--purple-nebula);
-            box-shadow: 0 0 20px rgba(189,0,255,0.2);
-        }
+        /* --- RADAR UI --- */
+        .radar-container { position: relative; width: 300px; height: 300px; margin: 20px auto; }
+        .radar-circle { width: 100%; height: 100%; border-radius: 50%; border: 2px solid rgba(189, 0, 255, 0.3); position: relative; animation: rotateScan 10s linear infinite; }
+        .radar-circle::after { content: ''; position: absolute; top: 0; left: 50%; width: 50%; height: 2px; background: var(--purple-nebula); transform-origin: left; box-shadow: 0 0 10px var(--purple-nebula); }
+        @keyframes rotateScan { to { transform: rotate(360deg); } }
+        .radar-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 10; background: var(--hud-bg); border-radius: 50%; width: 100px; height: 100px; display:flex; flex-direction:column; justify-content:center; align-items:center; border: 2px solid var(--purple-nebula); box-shadow: 0 0 20px rgba(189,0,255,0.2); }
         .radar-key-display { font-family: 'Teko'; font-size: 3rem; color: white; line-height: 0.8; }
         .radar-subtitle { color: var(--purple-nebula); font-size: 0.8rem; letter-spacing: 2px; }
-        
-        .squad-grid {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
-            margin-top: 30px;
-        }
-        .squad-box {
-            border: 1px solid var(--purple-nebula); padding: 10px;
-            text-align: center; cursor: pointer; transition: 0.2s;
-            background: rgba(189,0,255,0.05);
-        }
+        .radar-segment { position: absolute; top: 50%; left: 50%; width: 20px; height: 140px; transform-origin: bottom center; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; cursor: pointer; transition: 0.2s; color: #555; font-weight: bold; }
+        .radar-segment:hover { color: var(--purple-nebula); text-shadow: 0 0 10px var(--purple-nebula); transform: translate(-50%, -100%) scale(1.1); }
+        .radar-scan-line { position: absolute; top: 0; left: 50%; width: 50%; height: 2px; background: var(--purple-nebula); transform-origin: left; box-shadow: 0 0 10px var(--purple-nebula); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 0; }
+        .squad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 30px; }
+        .squad-box { border: 1px solid var(--purple-nebula); padding: 10px; text-align: center; cursor: pointer; transition: 0.2s; background: rgba(189,0,255,0.05); }
         .squad-box:hover { background: var(--purple-nebula); color: black; transform: translateY(-3px); box-shadow: 0 0 15px var(--purple-nebula); }
         .squad-box:hover .squad-chord { color: black; }
         .squad-role { font-size: 0.7rem; color: #aaa; }
@@ -432,6 +393,7 @@
             .bio-val { text-align: left; width: 100%; font-size: 1.1rem; word-break: break-word; color: var(--amber-glow); }
             .tuner-display-ring { width: 150px; height: 150px; }
             .tuner-note-main { font-size: 4rem; }
+            .radar-container { width: 250px; height: 250px; }
         }
     </style>
 </head>
@@ -556,7 +518,13 @@
                 </div>
             </div>
             
-            <div style="color:white; font-size:1.2rem; margin:10px 0;">SQUAD CHORDS (DIATONIC)</div>
+            <div style="display:flex; gap:10px; justify-content:center; margin-bottom:10px;">
+                <button class="metro-btn" style="border-color:var(--purple-nebula);" onclick="rotateRadar(-1)">&lt;</button>
+                <div style="color:#aaa; font-size:0.8rem; padding:10px;">ROTATE KEY VECTOR</div>
+                <button class="metro-btn" style="border-color:var(--purple-nebula);" onclick="rotateRadar(1)">&gt;</button>
+            </div>
+
+            <div style="color:white; font-size:1.2rem; margin-bottom:10px;">SQUAD CHORDS (DIATONIC)</div>
             <div class="squad-grid" id="squad-grid">
                 <!-- Generated via JS -->
             </div>
@@ -1015,10 +983,14 @@
             window.engageTarget = function(track) {
                 document.getElementById('deploy-title').innerText = track.trackName; document.getElementById('deploy-artist').innerText = track.artistName;
                 const q = encodeURIComponent(`${track.artistName} ${track.trackName}`);
+                // Precise search string for the "Ducky" trick
+                const duckyQuery = encodeURIComponent(`site:tabs.ultimate-guitar.com "${track.artistName}" "${track.trackName}" chords`);
+                
                 const providers = [
-                    { name: "ULTIMATE GUITAR", icon: "⚡", url: `https://www.ultimate-guitar.com/search.php?search_type=title&value=${q}`, desc: "TAB DATABASE" },
+                    // UPDATED: Uses DuckDuckGo's '!ducky' bang to auto-redirect to the first result on UG
+                    { name: "ULTIMATE GUITAR", icon: "⚡", url: `https://duckduckgo.com/?q=!ducky+${duckyQuery}`, desc: "DIRECT LINK (AUTO)" },
                     { name: "CHORDIFY", icon: "🎹", url: `https://chordify.net/search/${q}`, desc: "AUTO-CHORD AI" },
-                    { name: "SONGSTERR", icon: "🎼", url: `https://www.songsterr.com/?pattern=${q}`, desc: "INTERACTIVE TAB" },
+                    { name: "SONGSTERR", icon: "🎼", url: `https://www.songsterr.com/a/wa/bestMatchForQueryString?s=${q}`, desc: "INTERACTIVE TAB" },
                     { name: "YOUTUBE", icon: "▶", url: `https://www.youtube.com/results?search_query=${q}+guitar+tutorial`, desc: "VIDEO INTEL" }
                 ];
                 const grid = document.getElementById('deploy-container'); grid.innerHTML = '';
